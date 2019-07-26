@@ -19,3 +19,7 @@ ant -f lexer.xml
 ```text
 java LexerMain [<INPUTFILE>] [<OUTPUTFILE>]
 ```
+
+## MISC
+
+I rushed this in one day, so there may be some (many) bugs in the project.
