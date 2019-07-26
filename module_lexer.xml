@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_lexer" default="compile.module.lexer">
+  <dirname property="module.lexer.basedir" file="${ant.file.module_lexer}"/>
+  
+  <property name="module.jdk.home.lexer" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.lexer" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.lexer" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.lexer" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="lexer.output.dir" value="${module.lexer.basedir}/out/production/Lexer"/>
+  <property name="lexer.testoutput.dir" value="${module.lexer.basedir}/out/test/Lexer"/>
+  
+  <path id="lexer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="lexer.module.production.classpath">
+    <path refid="${module.jdk.classpath.lexer}"/>
+  </path>
+  
+  <path id="lexer.runtime.production.module.classpath">
+    <pathelement location="${lexer.output.dir}"/>
+  </path>
+  
+  <path id="lexer.module.classpath">
+    <path refid="${module.jdk.classpath.lexer}"/>
+    <pathelement location="${lexer.output.dir}"/>
+  </path>
+  
+  <path id="lexer.runtime.module.classpath">
+    <pathelement location="${lexer.testoutput.dir}"/>
+    <pathelement location="${lexer.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.lexer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.lexer">
+    <patternset refid="excluded.from.module.lexer"/>
+  </patternset>
+  
+  <path id="lexer.module.sourcepath">
+    <dirset dir="${module.lexer.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.lexer" depends="compile.module.lexer.production,compile.module.lexer.tests" description="Compile module Lexer"/>
+  
+  <target name="compile.module.lexer.production" depends="register.custom.compilers" description="Compile module Lexer; production classes">
+    <mkdir dir="${lexer.output.dir}"/>
+    <javac2 destdir="${lexer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.lexer}/javac">
+      <compilerarg line="${compiler.args.lexer}"/>
+      <bootclasspath refid="lexer.module.bootclasspath"/>
+      <classpath refid="lexer.module.production.classpath"/>
+      <src refid="lexer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.lexer"/>
+    </javac2>
+    
+    <copy todir="${lexer.output.dir}">
+      <fileset dir="${module.lexer.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.lexer.tests" depends="register.custom.compilers,compile.module.lexer.production" description="compile module Lexer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.lexer" description="cleanup module">
+    <delete dir="${lexer.output.dir}"/>
+    <delete dir="${lexer.testoutput.dir}"/>
+  </target>
+</project>
