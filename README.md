@@ -8,6 +8,14 @@
 
 使用ant进行生成：
 
-```$xslt
+```text
 ant -f lexer.xml
+```
+
+## Run
+
+格式：
+
+```text
+java LexerMain [<INPUTFILE>] [<OUTPUTFILE>]
 ```
